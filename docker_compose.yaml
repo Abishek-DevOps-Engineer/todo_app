@@ -1,0 +1,21 @@
+version: '3.1'
+services:
+  mysqldb:
+    image: mysql:latest
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=todo_app
+  my-app:
+    build: .
+    ports:
+      - 5000:5000
+    environment:
+      - MYSQL_HOST=db
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DB=todo_app
+      - SECRET_KEY=${MYSQL_PASSWORD}
+    depends_on:
+      - "mysqldb"  
