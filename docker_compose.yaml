@@ -1,21 +1,25 @@
-version: '3.1'
+version: "3.1"
 services:
-  mysqldb:
-    image: mysql:latest
-    ports:
-      - 3306:3306
-    environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
-      - MYSQL_DATABASE=todo_app
-  my-app:
-    build: .
+  pythontodoapp:
+    image: abishek1710/todowebapppython:latest
     ports:
       - 5000:5000
     environment:
-      - MYSQL_HOST=db
-      - MYSQL_USER=root
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-      - MYSQL_DB=todo_app
-      - SECRET_KEY=${MYSQL_PASSWORD}
-    depends_on:
-      - "mysqldb"  
+      - MYSQL_HOST: ${MYSQL_HOST}
+      - MYSQL_USER: ${MYSQL_USER}
+      - MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      - MYSQL_DB: todo_app
+      - SECRET_KEY: ${SECRET_KEY}
+
+volumes:
+  mymysqlvolume:
+    driver: local    
+
+  mysqldb:
+    image: mysql:oraclelinux9
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - mymysqlvolume: /var/lib/mysql
