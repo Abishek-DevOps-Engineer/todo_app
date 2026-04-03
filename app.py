@@ -1,10 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
-from flask_mysqldb import MySQL
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
 import os
-import pymysql
-pymysql.install_as_MySQLdb()
+import mysql.connector
+from mysql.connector import Error
 
 load_dotenv()
 
@@ -12,13 +11,19 @@ app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY', 'dev-secret-key')
 
 # MySQL Configuration
-app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST', 'localhost')
-app.config['MYSQL_USER'] = os.getenv('MYSQL_USER', 'root')
-app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD', '')
-app.config['MYSQL_DB'] = os.getenv('MYSQL_DB', 'todo_app')
-app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
+MYSQL_CONFIG = {
+    'host': os.getenv('MYSQL_HOST', 'localhost'),
+    'user': os.getenv('MYSQL_USER', 'root'),
+    'password': os.getenv('MYSQL_PASSWORD', ''),
+    'database': os.getenv('MYSQL_DB', 'todo_app')
+}
 
-mysql = MySQL(app)
+def get_db_connection():
+    try:
+        return mysql.connector.connect(**MYSQL_CONFIG)
+    except Error as e:
+        print(f"Database connection error: {e}")
+        return None
 
 
 def login_required(f):
@@ -69,13 +74,19 @@ def register():
             return render_template('register.html')
 
         try:
-            cur = mysql.connection.cursor()
+            conn = get_db_connection()
+            if not conn:
+                flash('Database connection failed.', 'error')
+                return render_template('register.html')
+            
+            cur = conn.cursor(dictionary=True)
             # Check duplicates
             cur.execute("SELECT id FROM users WHERE username = %s OR email = %s", (username, email))
             existing = cur.fetchone()
             if existing:
                 flash('Username or email already exists.', 'error')
                 cur.close()
+                conn.close()
                 return render_template('register.html')
 
             hashed_pw = generate_password_hash(password)
@@ -83,8 +94,9 @@ def register():
                 "INSERT INTO users (username, email, password) VALUES (%s, %s, %s)",
                 (username, email, hashed_pw)
             )
-            mysql.connection.commit()
+            conn.commit()
             cur.close()
+            conn.close()
             flash('Account created successfully! Please log in.', 'success')
             return redirect(url_for('login'))
         except Exception as e:
@@ -108,10 +120,16 @@ def login():
             return render_template('login.html')
 
         try:
-            cur = mysql.connection.cursor()
+            conn = get_db_connection()
+            if not conn:
+                flash('Database connection failed.', 'error')
+                return render_template('login.html')
+            
+            cur = conn.cursor(dictionary=True)
             cur.execute("SELECT * FROM users WHERE email = %s", (email,))
             user = cur.fetchone()
             cur.close()
+            conn.close()
 
             if user and check_password_hash(user['password'], password):
                 session['user_id'] = user['id']
@@ -139,13 +157,19 @@ def logout():
 @app.route('/todos')
 @login_required
 def todos():
-    cur = mysql.connection.cursor()
+    conn = get_db_connection()
+    if not conn:
+        flash('Database connection failed.', 'error')
+        return render_template('todos.html', todos=[])
+    
+    cur = conn.cursor(dictionary=True)
     cur.execute(
         "SELECT * FROM todos WHERE user_id = %s ORDER BY is_completed ASC, created_at DESC",
         (session['user_id'],)
     )
     todo_list = cur.fetchall()
     cur.close()
+    conn.close()
     return render_template('todos.html', todos=todo_list)
 
 
@@ -161,13 +185,19 @@ def add_todo():
         flash('Task title is required.', 'error')
         return redirect(url_for('todos'))
 
-    cur = mysql.connection.cursor()
+    conn = get_db_connection()
+    if not conn:
+        flash('Database connection failed.', 'error')
+        return redirect(url_for('todos'))
+    
+    cur = conn.cursor()
     cur.execute(
         "INSERT INTO todos (user_id, title, description, priority, due_date) VALUES (%s, %s, %s, %s, %s)",
         (session['user_id'], title, description, priority, due_date)
     )
-    mysql.connection.commit()
+    conn.commit()
     cur.close()
+    conn.close()
     flash('Task added!', 'success')
     return redirect(url_for('todos'))
 
@@ -175,23 +205,35 @@ def add_todo():
 @app.route('/todos/toggle/<int:todo_id>')
 @login_required
 def toggle_todo(todo_id):
-    cur = mysql.connection.cursor()
+    conn = get_db_connection()
+    if not conn:
+        flash('Database connection failed.', 'error')
+        return redirect(url_for('todos'))
+    
+    cur = conn.cursor()
     cur.execute(
         "UPDATE todos SET is_completed = NOT is_completed WHERE id = %s AND user_id = %s",
         (todo_id, session['user_id'])
     )
-    mysql.connection.commit()
+    conn.commit()
     cur.close()
+    conn.close()
     return redirect(url_for('todos'))
 
 
 @app.route('/todos/delete/<int:todo_id>')
 @login_required
 def delete_todo(todo_id):
-    cur = mysql.connection.cursor()
+    conn = get_db_connection()
+    if not conn:
+        flash('Database connection failed.', 'error')
+        return redirect(url_for('todos'))
+    
+    cur = conn.cursor()
     cur.execute("DELETE FROM todos WHERE id = %s AND user_id = %s", (todo_id, session['user_id']))
-    mysql.connection.commit()
+    conn.commit()
     cur.close()
+    conn.close()
     flash('Task deleted.', 'success')
     return redirect(url_for('todos'))
 
