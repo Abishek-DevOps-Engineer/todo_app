@@ -19,13 +19,14 @@ A clean, full-stack task management web app built with Python, Flask, and MySQL.
 
 ## Tech Stack
 
-| Layer      | Technology                        |
-|------------|-----------------------------------|
-| Backend    | Python 3, Flask                   |
-| Database   | MySQL (via Flask-MySQLdb, PyMySQL)|
-| Frontend   | Jinja2, HTML5, CSS3, Vanilla JS   |
-| Auth       | Werkzeug password hashing, Flask sessions |
-| Fonts      | Google Fonts (Syne, DM Sans)      |
+| Layer            | Technology                               |
+|------------------|------------------------------------------|
+| Backend          | Python 3, Flask                          |
+| Database Driver  | mysql-connector-python                   |
+| Database         | MySQL 5.7+                              |
+| Frontend         | Jinja2, HTML5, CSS3, Vanilla JavaScript  |
+| Authentication   | Werkzeug password hashing, Flask sessions|
+| Containerization | Docker & Docker Compose                  |
 
 ---
 
@@ -33,20 +34,27 @@ A clean, full-stack task management web app built with Python, Flask, and MySQL.
 
 ```
 taska/
-├── app.py                  # Main Flask application & routes
-├── schema.sql              # Database schema (users + todos tables)
-├── requirements.txt        # Python dependencies
-├── .env                    # Environment variables (not committed)
+├── app.py                           # Main Flask application & routes
+├── schema.sql                       # Database schema (users + todos tables)
+├── requirements.txt                 # Python dependencies
+├── Dockerfile                       # Docker container configuration
+├── docker-compose.yaml              # Docker Compose setup (Flask + MySQL)
+├── .env                             # Environment variables (not committed)
+├── README.md                        # Project documentation
+├── QUICK_START_GUIDE.md             # Quick start instructions
+├── IMPLEMENTATION_STATUS.md         # Detailed implementation checklist
+├── TECHNICAL_ARCHITECTURE.md        # System architecture documentation
+├── APP_FLOW_DOCUMENTATION.md        # Application flow and workflows
 ├── static/
-│   ├── css/
-│   │   └── main.css        # All styles (CSS variables, components)
-│   └── js/
-│       └── main.js         # Password toggle, strength bar, flash dismissal
-└── templates/
-    ├── base.html           # Base layout with flash messages
-    ├── login.html          # Login page
-    ├── register.html       # Registration page
-    └── todos.html          # Main task dashboard
+│   ├── main.js                      # Password toggle, strength bar, flash dismissal
+│   └── css/
+│       └── main.css                 # All styles (CSS variables, components)
+├── templates/
+│   ├── base.html                    # Base layout with flash messages
+│   ├── login.html                   # Login page
+│   ├── register.html                # Registration page
+│   └── todos.html                   # Main task dashboard
+└── logs/                            # Application log files (auto-created)
 ```
 
 ---
@@ -101,6 +109,30 @@ python app.py
 ```
 
 Visit `http://127.0.0.1:5000` in your browser.
+
+---
+
+## Docker Setup (Alternative)
+
+For easy deployment with Docker, use the provided `docker-compose.yaml`:
+
+```bash
+# Build and run services
+docker-compose up --build
+
+# Run in background
+docker-compose up -d --build
+
+# Stop services
+docker-compose down
+```
+
+The setup automatically:
+- Creates the MySQL container with the database
+- Builds and runs the Flask application
+- Exposes Flask on port 5000 and MySQL on port 3306
+
+See `QUICK_START_GUIDE.md` for detailed Docker instructions.
 
 ---
 
@@ -167,6 +199,17 @@ CREATE TABLE todos (
 - Passwords are never stored in plain text — Werkzeug's PBKDF2-based hashing is used.
 - All todo queries filter by `user_id` from the session, preventing cross-user data access.
 - The `.env` file should never be committed to version control. Add it to `.gitignore`.
+
+---
+
+## Additional Documentation
+
+For more detailed information, refer to:
+
+- **[QUICK_START_GUIDE.md](QUICK_START_GUIDE.md)** — Quick setup instructions (local & Docker)
+- **[IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md)** — Detailed feature checklist and implementation details
+- **[TECHNICAL_ARCHITECTURE.md](TECHNICAL_ARCHITECTURE.md)** — System architecture and technical decisions
+- **[APP_FLOW_DOCUMENTATION.md](APP_FLOW_DOCUMENTATION.md)** — User flows and application workflows
 
 ---
 
