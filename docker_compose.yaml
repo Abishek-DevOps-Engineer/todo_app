@@ -1,0 +1,29 @@
+version: "3.1"
+services:
+  pythontodoapp:
+    image: testpy
+    ports:
+      - 5000:5000
+    environment:
+      - MYSQL_HOST=mysqldb
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DB=todo_app
+      - SECRET_KEY=${SECRET_KEY}
+    depends_on:
+      - "mysqldb"
+
+  mysqldb:
+    image: mysql:oraclelinux9
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=todo_app
+# This section defines the database configuration      
+    volumes:
+      - mysqlvolume:/var/lib/mysql
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+volumes:
+  mysqlvolume:
+    driver: local

@@ -39,3 +39,45 @@ document.querySelectorAll('.flash').forEach(el => {
         setTimeout(() => el.remove(), 400);
     }, 4000);
 });
+
+// Custom confirmation modal for add todo form
+const confirmModal = document.getElementById('confirmModal');
+const addTodoForm = document.querySelector('.add-task-form');
+let formToSubmit = null;
+
+if (addTodoForm && confirmModal) {
+    addTodoForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        formToSubmit = addTodoForm;
+        confirmModal.classList.add('active');
+    });
+
+    // Modal button handlers
+    confirmModal.querySelectorAll('[data-action]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const action = btn.dataset.action;
+            if (action === 'confirm' && formToSubmit) {
+                formToSubmit.submit();
+            } else {
+                confirmModal.classList.remove('active');
+                formToSubmit = null;
+            }
+        });
+    });
+
+    // Close modal on backdrop click
+    confirmModal.addEventListener('click', (e) => {
+        if (e.target === confirmModal) {
+            confirmModal.classList.remove('active');
+            formToSubmit = null;
+        }
+    });
+
+    // Handle escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && confirmModal.classList.contains('active')) {
+            confirmModal.classList.remove('active');
+            formToSubmit = null;
+        }
+    });
+}
