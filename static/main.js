@@ -57,7 +57,6 @@ if (addTodoForm && confirmModal) {
         btn.addEventListener('click', () => {
             const action = btn.dataset.action;
             if (action === 'confirm' && formToSubmit) {
-                formToSubmit.removeEventListener('submit', handleFormSubmit);
                 formToSubmit.submit();
             } else {
                 confirmModal.classList.remove('active');
