@@ -3,7 +3,8 @@ const quotes = [
     "Stay organized. Stay focused. Stay productive.",
     "Turn ideas into action. One task at a time.",
     "Master your day, one checkbox at a time.",
-    "Organize your thoughts. Execute your dreams."
+    "Organize your thoughts. Execute your dreams.",
+    "Success is the sum of small efforts repeated day in and day out."
 ];
 
 let quoteIndex = 0;
