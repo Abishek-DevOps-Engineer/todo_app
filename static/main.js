@@ -1,3 +1,21 @@
+// Rotating quotes on login page
+const quotes = [
+    "Stay organized. Stay focused. Stay productive.",
+    "Turn ideas into action. One task at a time.",
+    "Master your day, one checkbox at a time.",
+    "Organize your thoughts. Execute your dreams."
+];
+
+let quoteIndex = 0;
+const quoteElement = document.getElementById('rotating-quote');
+
+if (quoteElement) {
+    setInterval(() => {
+        quoteIndex = (quoteIndex + 1) % quotes.length;
+        quoteElement.textContent = quotes[quoteIndex];
+    }, 4000); // Change quote every 4 seconds
+}
+
 // Toggle password visibility
 document.querySelectorAll('.toggle-pw').forEach(btn => {
     btn.addEventListener('click', () => {
