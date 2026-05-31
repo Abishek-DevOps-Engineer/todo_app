@@ -228,7 +228,7 @@ def add_todo():
         due_date = request.form.get('due_date') or None
 
         if not title:
-            flash('Task title is required.', 'error')
+            flash('Task name is required.', 'error')
             app.logger.warning(f"Add todo failed for user {session['user_id']}: Missing task title")
             return redirect(url_for('todos'))
 
