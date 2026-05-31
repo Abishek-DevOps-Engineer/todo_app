@@ -82,14 +82,22 @@ pipeline {
     }
 	post{
 	
-		success{
-		
-			echo 'Success'
+		success {
+			sh '''
+			aws sns publish \
+			--topic-arn "arn:aws:sns:ap-south-1:065511294042:JenkinsPipeline" \
+			--subject "Jenkins Pipeline Success" \
+			--message "Job ${JOB_NAME} Build #${BUILD_NUMBER} completed successfully."
+			'''
 		}
-		
+
 		failure {
-		
-			echo 'Failure'
+			sh '''
+			aws sns publish \
+			--topic-arn "arn:aws:sns:ap-south-1:065511294042:JenkinsPipeline" \
+			--subject "Jenkins Pipeline Failed" \
+			--message "Job ${JOB_NAME} Build #${BUILD_NUMBER} failed."
+			'''
 		}
 	}
 }
