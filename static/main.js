@@ -59,6 +59,35 @@ document.querySelectorAll('.flash').forEach(el => {
     }, 4000);
 });
 
+// Custom validation error display
+function showValidationError(message) {
+    // Remove any existing validation error
+    const existing = document.getElementById('validationError');
+    if (existing) existing.remove();
+    
+    // Create styled error message matching app theme
+    const errorDiv = document.createElement('div');
+    errorDiv.id = 'validationError';
+    errorDiv.className = 'validation-error';
+    errorDiv.innerHTML = `
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+        <span>${message}</span>
+    `;
+    
+    // Insert after the form
+    const form = document.querySelector('.add-task-form');
+    form.parentNode.insertBefore(errorDiv, form.nextSibling);
+    
+    // Auto-remove after 4 seconds
+    setTimeout(() => {
+        errorDiv.style.transition = 'opacity 0.3s';
+        errorDiv.style.opacity = '0';
+        setTimeout(() => errorDiv.remove(), 300);
+    }, 4000);
+}
+
 // Custom confirmation modal for add todo form
 const confirmModal = document.getElementById('confirmModal');
 const addTodoForm = document.querySelector('.add-task-form');
@@ -67,6 +96,17 @@ let formToSubmit = null;
 if (addTodoForm && confirmModal) {
     addTodoForm.addEventListener('submit', (e) => {
         e.preventDefault();
+        
+        // Custom validation - Check if task title is empty
+        const titleInput = document.getElementById('taskTitle');
+        const titleValue = titleInput.value.trim();
+        
+        if (!titleValue) {
+            // Show custom validation error
+            showValidationError('Task title is required');
+            return;
+        }
+        
         formToSubmit = addTodoForm;
         confirmModal.classList.add('active');
     });
