@@ -119,3 +119,109 @@ jinja2.exceptions.UndefinedError: 'str object' has no attribute 'strftime'
 2026-05-24 12:15:15,147 INFO: Deleting todo 1 for user 1 [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:290]
 2026-05-24 12:15:15,148 ERROR: Delete todo failed for user 1: Database connection failed [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:294]
 2026-05-24 12:15:15,149 ERROR: Failed to fetch todos for user 1: Database connection failed [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:202]
+2026-06-07 15:47:21,592 INFO: Todo App started [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:34]
+2026-06-07 15:47:22,847 INFO: Login attempt for email: test@example.com [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:153]
+2026-06-07 15:47:23,397 INFO: Successful login for user: testuser (ID: 1) [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:170]
+2026-06-07 15:47:35,407 INFO: Todo App started [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:34]
+2026-06-07 15:47:35,608 WARNING: Register validation failed for username: ab. Errors: ['Username must be at least 3 characters.'] [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:98]
+2026-06-07 15:47:35,615 WARNING: Register validation failed for username: testuser. Errors: ['Please enter a valid email address.'] [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:98]
+2026-06-07 15:47:35,622 WARNING: Register validation failed for username: testuser. Errors: ['Password must be at least 6 characters.'] [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:98]
+2026-06-07 15:47:35,629 WARNING: Register validation failed for username: testuser. Errors: ['Passwords do not match.'] [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:98]
+2026-06-07 15:47:35,635 INFO: Attempting registration for username: newuser [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:102]
+2026-06-07 15:47:35,821 INFO: User registered successfully: newuser [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:128]
+2026-06-07 15:47:35,827 INFO: Attempting registration for username: testuser [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:102]
+2026-06-07 15:47:35,828 WARNING: Registration failed: Username or email already exists. Username: testuser, Email: different@example.com [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:115]
+2026-06-07 15:47:35,835 INFO: Attempting registration for username: newuser [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:102]
+2026-06-07 15:47:35,836 WARNING: Registration failed: Username or email already exists. Username: newuser, Email: test@example.com [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:115]
+2026-06-07 15:47:35,841 INFO: Attempting registration for username: newuser [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:102]
+2026-06-07 15:47:35,841 ERROR: Failed to register newuser: Database connection failed [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:106]
+2026-06-07 15:47:35,848 WARNING: Login attempt with missing fields [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:149]
+2026-06-07 15:47:35,855 WARNING: Login attempt with missing fields [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:149]
+2026-06-07 15:47:35,861 WARNING: Login attempt with missing fields [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:149]
+2026-06-07 15:47:36,042 INFO: Login attempt for email: test@example.com [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:153]
+2026-06-07 15:47:36,217 INFO: Successful login for user: testuser (ID: 1) [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:170]
+2026-06-07 15:47:36,404 INFO: Login attempt for email: test@example.com [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:153]
+2026-06-07 15:47:36,611 INFO: Successful login for user: testuser (ID: 1) [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:170]
+2026-06-07 15:47:36,646 INFO: Login attempt for email: nonexistent@example.com [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:153]
+2026-06-07 15:47:36,646 WARNING: Failed login attempt for email: nonexistent@example.com (invalid credentials) [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:173]
+2026-06-07 15:47:36,847 INFO: Login attempt for email: test@example.com [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:153]
+2026-06-07 15:47:37,042 WARNING: Failed login attempt for email: test@example.com (invalid credentials) [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:173]
+2026-06-07 15:47:37,048 INFO: Login attempt for email: test@example.com [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:153]
+2026-06-07 15:47:37,048 ERROR: Login failed for test@example.com: Database connection failed [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:157]
+2026-06-07 15:47:37,055 INFO: User logged out: testuser (ID: 1) [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:187]
+2026-06-07 15:47:37,062 INFO: User logged out: testuser (ID: 1) [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:187]
+2026-06-07 15:47:37,074 INFO: User logged out: testuser (ID: 1) [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:187]
+2026-06-07 15:47:51,618 INFO: Todo App started [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:34]
+2026-06-07 15:47:51,833 ERROR: Error fetching todos for user 1: 'str object' has no attribute 'strftime' [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:231]
+Traceback (most recent call last):
+  File "D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py", line 226, in todos
+    return render_template('todos.html',
+        todos=todo_list,
+        show_welcome_modal=show_welcome_modal,
+        pending_tasks=pending_tasks)
+  File "C:\Users\Abishek\AppData\Local\Programs\Python\Python314\Lib\site-packages\flask\templating.py", line 152, in render_template
+    return _render(app, template, context)
+  File "C:\Users\Abishek\AppData\Local\Programs\Python\Python314\Lib\site-packages\flask\templating.py", line 133, in _render
+    rv = template.render(context)
+  File "C:\Users\Abishek\AppData\Local\Programs\Python\Python314\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Abishek\AppData\Local\Programs\Python\Python314\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "D:\Abishek\DEVOPS_EMC\Project\todo_app\templates\todos.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "D:\Abishek\DEVOPS_EMC\Project\todo_app\templates\base.html", line 57, in top-level template code
+    {% block content %}{% endblock %}
+    ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Abishek\DEVOPS_EMC\Project\todo_app\templates\todos.html", line 72, in block 'content'
+    <span class="task-date">Added {{ todo.created_at.strftime('%b %d') }}</span>
+    
+  File "C:\Users\Abishek\AppData\Local\Programs\Python\Python314\Lib\site-packages\jinja2\utils.py", line 92, in from_obj
+    if hasattr(obj, "jinja_pass_arg"):
+       ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+jinja2.exceptions.UndefinedError: 'str object' has no attribute 'strftime'
+2026-06-07 15:47:51,948 ERROR: Failed to fetch todos for user 1: Database connection failed [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:202]
+2026-06-07 15:47:51,955 ERROR: Failed to fetch todos for user 1: Database connection failed [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:202]
+2026-06-07 15:47:51,967 WARNING: Add todo failed for user 1: Missing task title [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:247]
+2026-06-07 15:47:51,980 WARNING: Add todo failed for user 1: Missing task title [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:247]
+2026-06-07 15:47:51,988 INFO: Adding todo for user 1: Buy groceries [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:250]
+2026-06-07 15:47:51,989 INFO: Todo added successfully for user 1: Buy groceries [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:265]
+2026-06-07 15:47:51,997 INFO: Adding todo for user 1: Buy groceries [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:250]
+2026-06-07 15:47:51,998 INFO: Todo added successfully for user 1: Buy groceries [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:265]
+2026-06-07 15:47:52,005 INFO: Adding todo for user 1: Buy groceries [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:250]
+2026-06-07 15:47:52,005 INFO: Todo added successfully for user 1: Buy groceries [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:265]
+2026-06-07 15:47:52,014 INFO: Adding todo for user 1: Quick task [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:250]
+2026-06-07 15:47:52,015 INFO: Todo added successfully for user 1: Quick task [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:265]
+2026-06-07 15:47:52,022 INFO: Adding todo for user 1: Buy groceries [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:250]
+2026-06-07 15:47:52,023 ERROR: Add todo failed for user 1: Database connection failed [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:254]
+2026-06-07 15:47:52,024 ERROR: Failed to fetch todos for user 1: Database connection failed [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:202]
+2026-06-07 15:47:52,030 INFO: Adding todo for user 1: Buy groceries [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:250]
+2026-06-07 15:47:52,031 ERROR: Add todo failed for user 1: Database connection failed [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:254]
+2026-06-07 15:47:52,043 INFO: Toggling todo 1 for user 1 [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:278]
+2026-06-07 15:47:52,044 INFO: Todo 1 toggled successfully for user 1 [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:293]
+2026-06-07 15:47:52,050 INFO: Toggling todo 1 for user 1 [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:278]
+2026-06-07 15:47:52,051 INFO: Todo 1 toggled successfully for user 1 [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:293]
+2026-06-07 15:47:52,058 INFO: Toggling todo 1 for user 1 [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:278]
+2026-06-07 15:47:52,059 INFO: Todo 1 toggled successfully for user 1 [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:293]
+2026-06-07 15:47:52,060 INFO: Toggling todo 5 for user 1 [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:278]
+2026-06-07 15:47:52,060 INFO: Todo 5 toggled successfully for user 1 [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:293]
+2026-06-07 15:47:52,061 INFO: Toggling todo 100 for user 1 [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:278]
+2026-06-07 15:47:52,061 INFO: Todo 100 toggled successfully for user 1 [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:293]
+2026-06-07 15:47:52,067 INFO: Toggling todo 1 for user 1 [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:278]
+2026-06-07 15:47:52,068 ERROR: Toggle todo failed for user 1: Database connection failed [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:282]
+2026-06-07 15:47:52,069 ERROR: Failed to fetch todos for user 1: Database connection failed [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:202]
+2026-06-07 15:47:52,103 INFO: Deleting todo 1 for user 1 [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:305]
+2026-06-07 15:47:52,105 INFO: Todo 1 deleted successfully for user 1 [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:317]
+2026-06-07 15:47:52,121 INFO: Deleting todo 1 for user 1 [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:305]
+2026-06-07 15:47:52,123 INFO: Todo 1 deleted successfully for user 1 [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:317]
+2026-06-07 15:47:52,140 INFO: Deleting todo 1 for user 1 [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:305]
+2026-06-07 15:47:52,142 INFO: Todo 1 deleted successfully for user 1 [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:317]
+2026-06-07 15:47:52,156 INFO: Deleting todo 1 for user 1 [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:305]
+2026-06-07 15:47:52,157 INFO: Todo 1 deleted successfully for user 1 [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:317]
+2026-06-07 15:47:52,158 INFO: Deleting todo 5 for user 1 [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:305]
+2026-06-07 15:47:52,158 INFO: Todo 5 deleted successfully for user 1 [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:317]
+2026-06-07 15:47:52,160 INFO: Deleting todo 100 for user 1 [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:305]
+2026-06-07 15:47:52,161 INFO: Todo 100 deleted successfully for user 1 [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:317]
+2026-06-07 15:47:52,177 INFO: Deleting todo 1 for user 1 [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:305]
+2026-06-07 15:47:52,178 ERROR: Delete todo failed for user 1: Database connection failed [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:309]
+2026-06-07 15:47:52,180 ERROR: Failed to fetch todos for user 1: Database connection failed [in D:\Abishek\DEVOPS_EMC\Project\todo_app\app.py:202]
