@@ -166,41 +166,9 @@ def login():
             if user and check_password_hash(user['password'], password):
                 session['user_id'] = user['id']
                 session['username'] = user['username']
+                session['show_welcome_modal'] = True
                 app.logger.info(f"Successful login for user: {user['username']} (ID: {user['id']})")
-                
-                # Fetch todos and pending tasks for welcome modal
-                try:
-                    conn = get_db_connection()
-                    if conn:
-                        cur = conn.cursor(dictionary=True)
-                        # Get all todos
-                        cur.execute(
-                            "SELECT * FROM todos WHERE user_id = %s ORDER BY is_completed ASC, created_at DESC",
-                            (user['id'],)
-                        )
-                        all_todos = cur.fetchall()
-                        
-                        # Get pending tasks for modal
-                        cur.execute(
-                            "SELECT id, title FROM todos WHERE user_id = %s AND is_completed = FALSE ORDER BY created_at DESC LIMIT 5",
-                            (user['id'],)
-                        )
-                        pending_tasks = cur.fetchall()
-                        cur.close()
-                        conn.close()
-                    else:
-                        all_todos = []
-                        pending_tasks = []
-                except Exception as e:
-                    app.logger.error(f"Error fetching todos for user {user['id']}: {str(e)}")
-                    all_todos = []
-                    pending_tasks = []
-                
-                return render_template('todos.html', 
-                    todos=all_todos, 
-                    show_welcome_modal=True, 
-                    username=user['username'],
-                    pending_tasks=pending_tasks)
+                return redirect(url_for('todos'))
             else:
                 app.logger.warning(f"Failed login attempt for email: {email} (invalid credentials)")
                 flash('Invalid email or password.', 'error')
@@ -240,10 +208,25 @@ def todos():
             (session['user_id'],)
         )
         todo_list = cur.fetchall()
+        
+        # Check if welcome modal should be shown
+        show_welcome_modal = session.pop('show_welcome_modal', False)
+        pending_tasks = []
+        
+        if show_welcome_modal:
+            cur.execute(
+                "SELECT id, title FROM todos WHERE user_id = %s AND is_completed = FALSE ORDER BY created_at DESC LIMIT 5",
+                (session['user_id'],)
+            )
+            pending_tasks = cur.fetchall()
+        
         cur.close()
         conn.close()
         app.logger.debug(f"Retrieved {len(todo_list)} todos for user {session['user_id']}")
-        return render_template('todos.html', todos=todo_list)
+        return render_template('todos.html', 
+            todos=todo_list, 
+            show_welcome_modal=show_welcome_modal,
+            pending_tasks=pending_tasks)
     except Exception as e:
         app.logger.error(f"Error fetching todos for user {session['user_id']}: {str(e)}", exc_info=True)
         flash('An error occurred while fetching your tasks.', 'error')

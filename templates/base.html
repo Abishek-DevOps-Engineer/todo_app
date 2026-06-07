@@ -11,15 +11,15 @@
 </head>
 <body>
     <!-- Welcome Modal -->
-    {% if show_welcome_modal %}
+    {% if show_welcome_modal is defined and show_welcome_modal %}
         <div class="modal-overlay" id="welcomeModal">
             <div class="welcome-modal">
                 <div class="welcome-modal__header">
-                    <h2 class="welcome-modal__title">Welcome back, {{ username }}!</h2>
+                    <h2 class="welcome-modal__title">Welcome back, {{ session.username }}!</h2>
                     <p class="welcome-modal__subtitle">Your pending tasks</p>
                 </div>
                 <div class="welcome-modal__content">
-                    {% if pending_tasks %}
+                    {% if pending_tasks is defined and pending_tasks %}
                         <div class="pending-tasks">
                             {% for task in pending_tasks %}
                                 <div class="pending-task">
