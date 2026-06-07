@@ -167,8 +167,40 @@ def login():
                 session['user_id'] = user['id']
                 session['username'] = user['username']
                 app.logger.info(f"Successful login for user: {user['username']} (ID: {user['id']})")
-                flash(f"Welcome back, {user['username']}!", 'success')
-                return redirect(url_for('todos'))
+                
+                # Fetch todos and pending tasks for welcome modal
+                try:
+                    conn = get_db_connection()
+                    if conn:
+                        cur = conn.cursor(dictionary=True)
+                        # Get all todos
+                        cur.execute(
+                            "SELECT * FROM todos WHERE user_id = %s ORDER BY is_completed ASC, created_at DESC",
+                            (user['id'],)
+                        )
+                        all_todos = cur.fetchall()
+                        
+                        # Get pending tasks for modal
+                        cur.execute(
+                            "SELECT id, title FROM todos WHERE user_id = %s AND is_completed = FALSE ORDER BY created_at DESC LIMIT 5",
+                            (user['id'],)
+                        )
+                        pending_tasks = cur.fetchall()
+                        cur.close()
+                        conn.close()
+                    else:
+                        all_todos = []
+                        pending_tasks = []
+                except Exception as e:
+                    app.logger.error(f"Error fetching todos for user {user['id']}: {str(e)}")
+                    all_todos = []
+                    pending_tasks = []
+                
+                return render_template('todos.html', 
+                    todos=all_todos, 
+                    show_welcome_modal=True, 
+                    username=user['username'],
+                    pending_tasks=pending_tasks)
             else:
                 app.logger.warning(f"Failed login attempt for email: {email} (invalid credentials)")
                 flash('Invalid email or password.', 'error')

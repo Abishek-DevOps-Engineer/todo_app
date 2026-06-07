@@ -10,6 +10,37 @@
     {% block extra_css %}{% endblock %}
 </head>
 <body>
+    <!-- Welcome Modal -->
+    {% if show_welcome_modal %}
+        <div class="modal-overlay" id="welcomeModal">
+            <div class="welcome-modal">
+                <div class="welcome-modal__header">
+                    <h2 class="welcome-modal__title">Welcome back, {{ username }}!</h2>
+                    <p class="welcome-modal__subtitle">Your pending tasks</p>
+                </div>
+                <div class="welcome-modal__content">
+                    {% if pending_tasks %}
+                        <div class="pending-tasks">
+                            {% for task in pending_tasks %}
+                                <div class="pending-task">
+                                    <div class="pending-task__dot"></div>
+                                    <span class="pending-task__name">{{ task.title }}</span>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="no-tasks">
+                            <p>No pending tasks. Great job! 🎉</p>
+                        </div>
+                    {% endif %}
+                </div>
+                <button class="welcome-modal__button" onclick="document.getElementById('welcomeModal').classList.add('modal-overlay--hidden')">
+                    Let's Go!
+                </button>
+            </div>
+        </div>
+    {% endif %}
+
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             <div class="flash-container">
