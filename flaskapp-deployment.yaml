@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flaskapp-deployment
+  labels:
+    app: flaskapp
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: flaskapp
+
+  template:
+    metadata:
+      labels:
+        app: flaskapp
+
+    spec:
+      containers:
+        - name: flaskappcontainer
+          image: abishek1710/todoapplicationpython:latest
+
+          ports:
+            - containerPort: 5000
+
+          env:
+            - name: MYSQL_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: mysql-configmap
+                  key: databaseurl
+
+            - name: MYSQL_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: mysql-configmap
+                  key: databasename
+
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: mysql-root-username
+
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: mysql-root-password
+
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: secret-key
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: flaskapp-service
+
+spec:
+  selector:
+    app: flaskapp
+
+  type: LoadBalancer
+
+  ports:
+    - protocol: TCP
+
+      # Internal Service Port
+      port: 5000
+
+      # Container Port
+      targetPort: 5000
+
+      # External Node Port
+      nodePort: 30000
