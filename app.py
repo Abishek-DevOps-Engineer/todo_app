@@ -7,10 +7,25 @@ from mysql.connector import Error
 import logging
 from logging.handlers import RotatingFileHandler
 
-load_dotenv()
+ENVIRONMENT = os.getenv('FLASK_ENV', 'development').lower()
+if ENVIRONMENT != 'production':
+    load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = os.getenv('SECRET_KEY', 'dev-secret-key')
+app.config.update(
+    ENV=ENVIRONMENT,
+    DEBUG=(ENVIRONMENT != 'production'),
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SAMESITE='Lax',
+    SESSION_COOKIE_SECURE=(ENVIRONMENT == 'production'),
+    PREFERRED_URL_SCHEME='https' if ENVIRONMENT == 'production' else 'http',
+)
+
+secret_key = os.getenv('SECRET_KEY')
+if ENVIRONMENT == 'production' and not secret_key:
+    raise RuntimeError('SECRET_KEY must be set in production')
+
+app.secret_key = secret_key or 'dev-secret-key'
 
 # Configure Logging
 if not os.path.exists('logs'):
@@ -35,11 +50,23 @@ app.logger.info('Todo App started')
 
 # MySQL Configuration
 MYSQL_CONFIG = {
-    'host': os.getenv('MYSQL_HOST', 'localhost'),
-    'user': os.getenv('MYSQL_USER', 'root'),
-    'password': os.getenv('MYSQL_PASSWORD', ''),
-    'database': os.getenv('MYSQL_DB', 'todo_app')
+    'host': os.getenv('MYSQL_HOST'),
+    'user': os.getenv('MYSQL_USER'),
+    'password': os.getenv('MYSQL_PASSWORD'),
+    'database': os.getenv('MYSQL_DB')
 }
+
+required_db_vars = [
+    'MYSQL_HOST',
+    'MYSQL_USER',
+    'MYSQL_PASSWORD',
+    'MYSQL_DB'
+]
+missing_db_vars = [var for var in required_db_vars if not os.getenv(var)]
+if missing_db_vars:
+    raise RuntimeError(
+        f"Missing required environment variables: {', '.join(missing_db_vars)}"
+    )
 
 def get_db_connection():
     try:
@@ -324,4 +351,4 @@ def delete_todo(todo_id):
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5000)
