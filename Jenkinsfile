@@ -12,7 +12,7 @@ pipeline {
     stages{
         stage('Source Checkout'){
             steps {
-                git branch: 'main', credentialsId: 'abishekgittokenaws1', url: 'https://github.com/Abishek-DevOps-Engineer/todo_app'
+                git branch: 'main', credentialsId: 'github-pat', url: 'https://github.com/Abishek-DevOps-Engineer/todo_app'
             }
         }
         
@@ -35,7 +35,7 @@ pipeline {
         stage('Push to Docker Hub'){
             steps { 
                 
-                withCredentials([usernamePassword(credentialsId: 'abishekdockertokenaws1', passwordVariable: 'DOCKER_PASS', usernameVariable: 'DOCKER_USER')]) {
+                withCredentials([usernamePassword(credentialsId: 'docker-pat', passwordVariable: 'DOCKER_PASS', usernameVariable: 'DOCKER_USER')]) {
 				
 					sh '''
 						echo "$DOCKER_PASS" | docker login -u $DOCKER_USER --password-stdin
@@ -48,34 +48,81 @@ pipeline {
             }
         }
 		stage('Deploy Application'){
-		
-			agent {
-				label 'productionnode'
-			
-			}
-			
-			steps {
-			
-				git branch: 'main', credentialsId: 'abishekgittokenaws1', url: 'https://github.com/Abishek-DevOps-Engineer/todo_app'
-			
-				withCredentials([string(credentialsId: 'mysqlpasswordabishek', variable: 'MYSQL_ROOT_PASSWORD')]) {
-					
-					withCredentials([usernamePassword(credentialsId: 'abishekdockertokenaws1', passwordVariable: 'DOCKER_PASS', usernameVariable: 'DOCKER_USER')]) {
-					
-					sh '''
-					
-						export MYSQL_PASSWORD=$MYSQL_ROOT_PASSWORD
-						export SECRET_KEY=test123
-						echo "$DOCKER_PASS" | docker login -u $DOCKER_USER --password-stdin
-						docker compose -f docker_compose.yaml down || true
-						docker compose -f docker_compose.yaml up -d
-					'''
 
-					}
-					
-				}
+
+			parallel {
+
+
+				stage('Deploy to apsouth1a'){
+
+					agent {
+
+						label 'productionnodeapsouth1a'
 			
+					}
+			
+					steps {
+					
+						git branch: 'main', credentialsId: 'github-pat', url: 'https://github.com/Abishek-DevOps-Engineer/todo_app'
+					
+						withCredentials([string(credentialsId: 'mysqlpasswordabishek', variable: 'MYSQL_ROOT_PASSWORD')]) {
+							
+							withCredentials([usernamePassword(credentialsId: 'docker-pat', passwordVariable: 'DOCKER_PASS', usernameVariable: 'DOCKER_USER')]) {
+							
+							sh '''
+							
+								export MYSQL_PASSWORD=$MYSQL_ROOT_PASSWORD
+								export SECRET_KEY=test123
+								echo "$DOCKER_PASS" | docker login -u $DOCKER_USER --password-stdin
+								docker compose -f docker_compose.yaml down || true
+								docker compose -f docker_compose.yaml up -d
+							'''
+
+							}
+							
+						}
+					
+					}
+
+				}
+
+			stage('Deploy to apsouth1b'){
+
+					agent {
+
+						label 'productionnodeapsouth1b'
+			
+					}
+			
+					steps {
+					
+						git branch: 'main', credentialsId: 'github-pat', url: 'https://github.com/Abishek-DevOps-Engineer/todo_app'
+					
+						withCredentials([string(credentialsId: 'mysqlpasswordabishek', variable: 'MYSQL_ROOT_PASSWORD')]) {
+							
+							withCredentials([usernamePassword(credentialsId: 'docker-pat', passwordVariable: 'DOCKER_PASS', usernameVariable: 'DOCKER_USER')]) {
+							
+							sh '''
+							
+								export MYSQL_PASSWORD=$MYSQL_ROOT_PASSWORD
+								export SECRET_KEY=test123
+								echo "$DOCKER_PASS" | docker login -u $DOCKER_USER --password-stdin
+								docker compose -f docker_compose.yaml down || true
+								docker compose -f docker_compose.yaml up -d
+							'''
+
+							}
+							
+						}
+					
+					}
+
+				}
+
+
 			}
+		
+
 		
 		
 		}
