@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
 import os
@@ -88,7 +88,45 @@ def login_required(f):
     return decorated
 
 
-# ─── Auth Routes ────────────────────────────────────────────────────────────
+# ─── Health Check Route ──────────────────────────────────────────────────────
+
+@app.route('/health', methods=['GET'])
+def health():
+    """
+    Health check endpoint for load balancer (ALB).
+    Returns 200 OK if the application is running and database is accessible.
+    """
+    try:
+        # Check database connectivity
+        conn = get_db_connection()
+        if not conn:
+            app.logger.warning("Health check failed: Unable to connect to database")
+            return jsonify({
+                'status': 'unhealthy',
+                'message': 'Database connection failed'
+            }), 503
+        
+        # Simple connectivity test
+        cur = conn.cursor()
+        cur.execute("SELECT 1")
+        cur.close()
+        conn.close()
+        
+        app.logger.debug("Health check passed")
+        return jsonify({
+            'status': 'healthy',
+            'message': 'Application is running',
+            'environment': ENVIRONMENT
+        }), 200
+    except Exception as e:
+        app.logger.error(f"Health check error: {str(e)}", exc_info=True)
+        return jsonify({
+            'status': 'unhealthy',
+            'message': str(e)
+        }), 503
+
+
+# ─── Auth Routes ─────────────────────────────────────────────────────────────
 
 @app.route('/')
 def index():
